@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Panel de Cliente — Constructora Chacón</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAn-DHOCtzdd1Uheo_AJQ0vjZh3Rt3G_r8",
+      authDomain: "constructora-ch.firebaseapp.com",
+      projectId: "constructora-ch",
+      storageBucket: "constructora-ch.firebasestorage.app",
+      messagingSenderId: "359610922559",
+      appId: "1:359610922559:web:ac83f5e9407bf758a92a8a",
+      measurementId: "G-5DQ5673R8H"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+      const gate = document.getElementById('authGate');
+      const appShell = document.getElementById('appShell');
+      if(!user){
+        gate.style.display = 'grid';
+        appShell.style.display = 'none';
+      } else {
+        gate.style.display = 'none';
+        appShell.style.display = 'grid';
+        let name = user.displayName || '';
+        if(!name){
+          try{
+            const raw = localStorage.getItem(`user_meta_${user.uid}`);
+            if(raw) name = (JSON.parse(raw).name) || '';
+          }catch(_){}
+        }
+        document.getElementById('userName').textContent = name || user.email;
+      }
+    });
+
+    window.logout = () => signOut(auth).then(()=> location.href = 'index.html');
+  </script>
+</head>
+<body class="dashboard">
+  <div id="authGate" style="display:none;place-items:center;min-height:100vh;text-align:center;padding:24px">
+    <div>
+      <h1 style="margin:0 0 8px;color:#002855">Acceso restringido</h1>
+      <p>Inicia sesión para ver tu panel.</p>
+      <a href="index.html" class="btn btn--accent" style="margin-top:12px">Volver al inicio</a>
+    </div>
+  </div>
+
+  <div id="appShell" class="dash" style="display:none">
+    <aside class="dash__sidebar">
+      <div class="dash__brand">
+        <img src="components/img/logoCH.png" alt="Constructora Chacón" />
+      </div>
+      <nav class="dash__nav">
+        <a href="#overview" class="active"><i class="ri-dashboard-line"></i> Resumen</a>
+        <a href="#projects"><i class="ri-building-2-line"></i> Proyectos</a>
+        <a href="#quotes"><i class="ri-file-list-3-line"></i> Cotizaciones</a>
+        <a href="#payments"><i class="ri-bank-card-line"></i> Pagos</a>
+        <a href="#materials"><i class="ri-bricks-line"></i> Materiales</a>
+        <a href="#analytics"><i class="ri-bar-chart-2-line"></i> Análisis</a>
+        <a href="#viewer3d"><i class="ri-cube-3-line"></i> Visor 3D</a>
+        <a href="#docs"><i class="ri-folder-open-line"></i> Documentos</a>
+        <a href="#support"><i class="ri-customer-service-2-line"></i> Soporte</a>
+      </nav>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+        <a class="btn btn--primary" href="index.html"><i class="ri-arrow-left-circle-line"></i> Salir al inicio</a>
+        <button class="btn btn--ghost" onclick="logout()"><i class="ri-logout-circle-line"></i> Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <main class="dash__main">
+      <header class="dash__header">
+        <h1>Bienvenido, <span id="userName">Cliente</span></h1>
+        <div class="dash__meta">
+          <span class="badge badge--gold"><i class="ri-shield-check-line"></i> Cliente verificado</span>
+        </div>
+      </header>
+
+      <section id="overview" class="dash__section">
+        <div class="grid grid--3">
+          <article class="kpi">
+            <h3>Proyectos activos</h3>
+            <p class="kpi__num">2</p>
+            <small>Actualizado hoy</small>
+          </article>
+          <article class="kpi">
+            <h3>Cotizaciones en curso</h3>
+            <p class="kpi__num">1</p>
+            <small>Revisión de alcance</small>
+          </article>
+          <article class="kpi">
+            <h3>Documentos</h3>
+            <p class="kpi__num">6</p>
+            <small>Planos, contratos y permisos</small>
+          </article>
+        </div>
+      </section>
+
+      <section id="projects" class="dash__section">
+        <h2>Proyectos</h2>
+        <div class="timeline">
+          <div class="timeline__item">
+            <div class="timeline__date">Abr 2025</div>
+            <div class="timeline__card">
+              <h3>Casa Club Coronado</h3>
+              <p>Avance 65% — Acabados y colocación de baldosas.</p>
+              <div class="progress"><span style="width:65%"></span></div>
+            </div>
+          </div>
+          <div class="timeline__item">
+            <div class="timeline__date">Feb 2025</div>
+            <div class="timeline__card">
+              <h3>PH Venecia Torre 2</h3>
+              <p>Avance 30% — Estructura y reforzamiento.</p>
+              <div class="progress"><span style="width:30%"></span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="quotes" class="dash__section">
+        <h2>Cotizaciones</h2>
+        <div class="table">
+          <div class="table__row table__row--head">
+            <div>ID</div><div>Proyecto</div><div>Monto</div><div>Estado</div><div></div>
+          </div>
+          <div class="table__row">
+            <div>#Q-2025-014</div><div>Muros perimetrales</div><div>$14,500</div><div><span class="badge">En revisión</span></div><div><button class="btn btn--ghost">Ver</button></div>
+          </div>
+          <div class="table__row">
+            <div>#Q-2025-011</div><div>Soldadura estructural</div><div>$8,200</div><div><span class="badge badge--gold">Aprobada</span></div><div><button class="btn btn--ghost">Descargar</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="payments" class="dash__section">
+        <h2>Pagos</h2>
+        <div class="grid grid--3">
+          <article class="kpi">
+            <h3>Métodos de pago</h3>
+            <p class="kpi__num">Tarjeta, Transferencia, Yappy</p>
+            <small>Contacta soporte para habilitar crédito</small>
+          </article>
+          <article class="kpi">
+            <h3>Pagos realizados</h3>
+            <p class="kpi__num">$22,700</p>
+            <small>Último pago: 12 Oct 2025</small>
+          </article>
+          <article class="kpi">
+            <h3>Saldo pendiente</h3>
+            <p class="kpi__num">$4,300</p>
+            <small>Vence: 28 Nov 2025</small>
+          </article>
+        </div>
+        <div class="table" style="margin-top:12px">
+          <div class="table__row table__row--head">
+            <div>Fecha</div><div>Concepto</div><div>Monto</div><div>Estado</div><div></div>
+          </div>
+          <div class="table__row">
+            <div>12/10/2025</div><div>Abono Proyecto Coronado</div><div>$5,000</div><div><span class="badge badge--gold">Aprobado</span></div><div><button class="btn btn--ghost">Recibo</button></div>
+          </div>
+          <div class="table__row">
+            <div>28/08/2025</div><div>Etapa estructura</div><div>$7,700</div><div><span class="badge badge--gold">Aprobado</span></div><div><button class="btn btn--ghost">Recibo</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="materials" class="dash__section">
+        <h2>Materiales</h2>
+        <div class="table">
+          <div class="table__row table__row--head">
+            <div>Código</div><div>Descripción</div><div>Unidad</div><div>Consumo</div><div>Stock</div>
+          </div>
+          <div class="table__row">
+            <div>MAT-001</div><div>Cemento Tipo I</div><div>Sacos</div><div>120</div><div>250</div>
+          </div>
+          <div class="table__row">
+            <div>MAT-024</div><div>Acero #4</div><div>Barras</div><div>340</div><div>600</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="analytics" class="dash__section">
+        <h2>Panel de análisis</h2>
+        <div class="grid grid--3">
+          <article class="kpi">
+            <h3>Costo vs Presupuesto</h3>
+            <p class="kpi__num">92%</p>
+            <small>Dentro del presupuesto</small>
+          </article>
+          <article class="kpi">
+            <h3>Tiempo ejecutado</h3>
+            <p class="kpi__num">68%</p>
+            <small>Proyección de entrega: Ene 2026</small>
+          </article>
+          <article class="kpi">
+            <h3>Rendimiento cuadrilla</h3>
+            <p class="kpi__num">1.15x</p>
+            <small>Última semana</small>
+          </article>
+        </div>
+      </section>
+
+      <section id="viewer3d" class="dash__section">
+        <h2>Visor 3D del proyecto</h2>
+        <p>Explora el modelo en 3D. Activa AR desde tu móvil para verlo en tu espacio.</p>
+        <div style="border:1px solid rgba(0,40,85,.12);border-radius:16px;overflow:hidden">
+          <model-viewer src="https://modelviewer.dev/shared-assets/models/House.glb" ar ar-modes="webxr scene-viewer quick-look" camera-controls tone-mapping="neutral" exposure="0.9" environment-image="neutral" shadow-intensity="1" auto-rotate style="width:100%;height:60vh"></model-viewer>
+        </div>
+        <small>Modelo demostrativo de casa. Sustituiremos por el de tu proyecto cuando esté listo.</small>
+      </section>
+
+      <section id="docs" class="dash__section">
+        <h2>Documentos</h2>
+        <div class="docs">
+          <a href="#" class="doc"><i class="ri-file-pdf-2-line"></i> Contrato_ProyectoCoronado.pdf</a>
+          <a href="#" class="doc"><i class="ri-file-3-line"></i> Plano_Estructural_Venecia.dwg</a>
+          <a href="#" class="doc"><i class="ri-file-image-line"></i> Render_Muros.jpg</a>
+        </div>
+      </section>
+
+      <section id="support" class="dash__section">
+        <h2>Soporte</h2>
+        <p>¿Necesitas ayuda? Escríbenos y te responderemos lo antes posible.</p>
+        <form class="form" onsubmit="event.preventDefault(); alert('Solicitud enviada.');">
+          <input type="text" placeholder="Asunto" required />
+          <textarea rows="4" placeholder="Describe tu necesidad" required></textarea>
+          <button class="btn btn--accent">Enviar</button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
+

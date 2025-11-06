@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Constructora Chacón, S.A. — Página Corporativa Oficial</title>
+  <meta name="description" content="Constructora Chacón, S.A. — Compromiso, calidad y responsabilidad en cada proyecto." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAn-DHOCtzdd1Uheo_AJQ0vjZh3Rt3G_r8",
+      authDomain: "constructora-ch.firebaseapp.com",
+      projectId: "constructora-ch",
+      storageBucket: "constructora-ch.firebasestorage.app",
+      messagingSenderId: "359610922559",
+      appId: "1:359610922559:web:ac83f5e9407bf758a92a8a",
+      measurementId: "G-5DQ5673R8H"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const analytics = getAnalytics(app);
+
+    // Make auth available globally
+    window.auth = auth;
+    window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+    window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+    window.signOut = signOut;
+    window.onAuthStateChanged = onAuthStateChanged;
+    window.updateProfile = updateProfile;
+  </script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="#inicio" class="brand">
+        <img src="components/img/logoCH.png" alt="Constructora Chacón, S.A." class="brand__logo" />
+      </a>
+      <nav class="nav" aria-label="Principal">
+        <button class="nav__toggle" aria-label="Abrir menú"><i class="ri-menu-line"></i></button>
+        <ul class="nav__list">
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="presupuesto.html">Presupuesto</a></li>
+          <li><a href="trabaja.html">Trabaja con nosotros</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+      <div class="header__actions">
+        <div class="auth__buttons" id="authButtons">
+          <button class="btn btn--ghost" id="loginBtn">Iniciar Sesión</button>
+          <button class="btn btn--accent" id="registerBtn">Registrarse</button>
+        </div>
+        <div class="user__menu" id="userMenu" style="display: none;">
+          <span class="user__email" id="userEmail"></span>
+          <button class="btn btn--ghost" id="logoutBtn">Cerrar Sesión</button>
+        </div>
+        <a class="btn btn--primary" href="#contacto">Cotizar</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero__bg" role="img" aria-label="Obra de construcción moderna"></div>
+      <div class="hero__overlay"></div>
+      <div class="container hero__content">
+        <h1 class="reveal">Juntos construimos futuro</h1>
+        <p class="reveal delay-1">Compromiso, calidad y responsabilidad en cada proyecto.</p>
+        <a href="#contacto" class="btn btn--accent reveal delay-2">Contáctanos</a>
+      </div>
+    </section>
+
+    <!-- Sobre Nosotros -->
+    <section id="sobre" class="section section--about">
+      <div class="container">
+        <h2 class="reveal">Sobre Nosotros</h2>
+        <div class="grid grid--2">
+          <div class="reveal">
+            <p>
+              "En Constructora Chacón, S.A., nos enorgullece ser una empresa panameña con un equipo altamente capacitado y comprometido.
+              Estamos registrados ante la Junta Técnica de Ingenieros y Arquitectos de Panamá, lo que garantiza calidad, cumplimiento y
+              profesionalismo en cada obra."
+            </p>
+            <h3 class="section__subtitle">Transformamos sueños en realidades</h3>
+            <div class="icons">
+              <span><i class="ri-medal-2-line"></i> Experiencia</span>
+              <span><i class="ri-shield-check-line"></i> Confianza</span>
+              <span><i class="ri-hand-heart-line"></i> Compromiso</span>
+            </div>
+          </div>
+          <div class="about__media reveal delay-1">
+            <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1600&auto=format&fit=crop" alt="Equipo en obra" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Valores -->
+    <section id="valores" class="section section--values">
+      <div class="container">
+        <h2 class="reveal center">Nuestros Valores</h2>
+        <div class="grid grid--4 cards">
+          <article class="card reveal">
+            <div class="card__icon">🏗️</div>
+            <h3>Compromiso</h3>
+            <p>"Nos comprometemos con cada proyecto como si fuera nuestro, cumpliendo plazos y superando expectativas."</p>
+          </article>
+          <article class="card reveal delay-1">
+            <div class="card__icon">🧱</div>
+            <h3>Garantía</h3>
+            <p>"Utilizamos materiales de primera calidad y técnicas innovadoras para asegurar construcciones duraderas."</p>
+          </article>
+          <article class="card reveal delay-2">
+            <div class="card__icon">🦺</div>
+            <h3>Seguridad</h3>
+            <p>"Cuidamos la integridad de nuestros colaboradores y clientes aplicando protocolos internacionales de seguridad."</p>
+          </article>
+          <article class="card reveal delay-3">
+            <div class="card__icon">🌍</div>
+            <h3>Responsabilidad</h3>
+            <p>"Actuamos con transparencia, cuidamos el medio ambiente y contribuimos al desarrollo sostenible de Panamá."</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Servicios -->
+    <section id="servicios" class="section section--services">
+      <div class="container">
+        <h2 class="reveal center">Servicios</h2>
+        <div class="grid grid--3 services">
+          <article class="service reveal">
+            <div class="service__icon">🏗️</div>
+            <h3>Albañilería</h3>
+            <p>"Construcciones básicas y remodelaciones sólidas, funcionales y estéticamente impecables."</p>
+            <a href="#contacto" class="btn btn--ghost">Solicitar cotización</a>
+          </article>
+          <article class="service reveal delay-1">
+            <div class="service__icon">⚡</div>
+            <h3>Soldadura</h3>
+            <p>"Soldadura especializada para estructuras metálicas, cerramientos y barandales, con materiales de primera calidad."</p>
+            <a href="#contacto" class="btn btn--ghost">Solicitar cotización</a>
+          </article>
+          <article class="service reveal delay-2">
+            <div class="service__icon">🏠</div>
+            <h3>Techos</h3>
+            <p>"Trabajamos con materiales resistentes que brindan seguridad ante condiciones climáticas extremas."</p>
+            <a href="#contacto" class="btn btn--ghost">Solicitar cotización</a>
+          </article>
+          <article class="service reveal">
+            <div class="service__icon">🧱</div>
+            <h3>Muros</h3>
+            <p>"Muros divisorios, decorativos y de contención, adaptados a las necesidades de cada proyecto."</p>
+            <a href="#contacto" class="btn btn--ghost">Solicitar cotización</a>
+          </article>
+          <article class="service reveal delay-1">
+            <div class="service__icon">🛣️</div>
+            <h3>Vías y cunetas</h3>
+            <p>"Obras que garantizan drenaje y transitabilidad, aportando al desarrollo comunitario."</p>
+            <a href="#contacto" class="btn btn--ghost">Solicitar cotización</a>
+          </article>
+          <article class="service reveal delay-2">
+            <div class="service__icon">🚧</div>
+            <h3>Cercas</h3>
+            <p>"Cercas decorativas o de seguridad que combinan funcionalidad y estética."</p>
+            <a href="#contacto" class="btn btn--ghost">Solicitar cotización</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experiencia / Proyectos destacados -->
+    <section id="experiencia" class="section section--brand inverse">
+      <div class="container">
+        <h2 class="center">Proyectos destacados</h2>
+        <div class="carousel" aria-roledescription="carrusel">
+          <button class="carousel__btn prev" aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button>
+          <div class="carousel__track" tabindex="0">
+            <figure class="carousel__item">
+              <img src="components/img/2do piso CH.jpg" alt="Proyecto 2do piso" />
+            </figure>
+            <figure class="carousel__item">
+              <img src="components/img/Baldosas CH.jpg" alt="Proyecto Baldosas" />
+            </figure>
+            <figure class="carousel__item">
+              <img src="components/img/baño CH.jpg" alt="Proyecto Baño" />
+            </figure>
+            <figure class="carousel__item">
+              <img src="components/img/edificio CH.jpg" alt="Proyecto Edificio" />
+            </figure>
+            <figure class="carousel__item">
+              <img src="components/img/edificio insideCH.jpg" alt="Interior Edificio" />
+            </figure>
+            <figure class="carousel__item">
+              <img src="components/img/puente CH.jpg" alt="Proyecto Puente" />
+            </figure>
+          </div>
+          <button class="carousel__btn next" aria-label="Siguiente"><i class="ri-arrow-right-s-line"></i></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Equipo -->
+    <section id="equipo" class="section">
+      <div class="container">
+        <h2 class="center reveal">Nuestro Equipo</h2>
+        <p class="center section__subtitle reveal delay-1">Más de una década de experiencia participando en proyectos emblemáticos de Panamá.</p>
+        <div class="grid grid--2 team">
+          <article class="member reveal">
+            <img src="https://images.unsplash.com/photo-1607779097040-26a41d0313a7?q=80&w=1000&auto=format&fit=crop" alt="Edgar Chacón" />
+            <h3>Edgar Chacón</h3>
+            <p>Representante legal, capataz y soldador.</p>
+          </article>
+          <article class="member reveal delay-1">
+            <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1000&auto=format&fit=crop" alt="Miguel Chacón" />
+            <h3>Miguel Chacón</h3>
+            <p>Capataz y albañil.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Estadísticas -->
+    <section class="section section--stats">
+      <div class="container">
+        <h2 class="center reveal">Nuestros Números</h2>
+        <p class="center section__subtitle reveal delay-1">Cifras que respaldan nuestra experiencia y compromiso</p>
+        <div class="grid grid--4 stats">
+          <div class="stat reveal">
+            <div class="stat__number" data-target="10">0</div>
+            <div class="stat__label">Años de Experiencia</div>
+            <div class="stat__icon"><i class="ri-calendar-line"></i></div>
+          </div>
+          <div class="stat reveal delay-1">
+            <div class="stat__number" data-target="50">0</div>
+            <div class="stat__label">Proyectos Completados</div>
+            <div class="stat__icon"><i class="ri-building-line"></i></div>
+          </div>
+          <div class="stat reveal delay-2">
+            <div class="stat__number" data-target="100">0</div>
+            <div class="stat__label">% Clientes Satisfechos</div>
+            <div class="stat__icon"><i class="ri-heart-line"></i></div>
+          </div>
+          <div class="stat reveal delay-3">
+            <div class="stat__number" data-target="24">0</div>
+            <div class="stat__label">Horas de Soporte</div>
+            <div class="stat__icon"><i class="ri-time-line"></i></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonios -->
+    <section class="section section--muted">
+      <div class="container">
+        <h2 class="center reveal">Lo Que Dicen Nuestros Clientes</h2>
+        <p class="center section__subtitle reveal delay-1">Testimonios de quienes han confiado en nosotros</p>
+        <div class="grid grid--3 testimonials">
+          <article class="testimonial reveal">
+            <div class="testimonial__content">
+              <div class="testimonial__quote">
+                <i class="ri-double-quotes-l"></i>
+              </div>
+              <p>"Excelente trabajo en la construcción de nuestra casa. Profesionales, puntuales y con materiales de primera calidad. Los recomiendo totalmente."</p>
+              <div class="testimonial__author">
+                <div class="testimonial__avatar">
+                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&auto=format&fit=crop" alt="Cliente" />
+                </div>
+                <div class="testimonial__info">
+                  <h4>María González</h4>
+                  <span>Propietaria, Casa Club Coronado</span>
+                </div>
+              </div>
+            </div>
+          </article>
+          <article class="testimonial reveal delay-1">
+            <div class="testimonial__content">
+              <div class="testimonial__quote">
+                <i class="ri-double-quotes-l"></i>
+              </div>
+              <p>"El equipo de Constructora Chacón superó nuestras expectativas. Trabajo impecable, cumplieron todos los plazos y el resultado final fue espectacular."</p>
+              <div class="testimonial__author">
+                <div class="testimonial__avatar">
+                  <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=100&auto=format&fit=crop" alt="Cliente" />
+                </div>
+                <div class="testimonial__info">
+                  <h4>Carlos Rodríguez</h4>
+                  <span>Director, PH Venecia</span>
+                </div>
+              </div>
+            </div>
+          </article>
+          <article class="testimonial reveal delay-2">
+            <div class="testimonial__content">
+              <div class="testimonial__quote">
+                <i class="ri-double-quotes-l"></i>
+              </div>
+              <p>"Profesionales de confianza. Han trabajado en varios proyectos con nosotros y siempre han demostrado compromiso y calidad excepcional."</p>
+              <div class="testimonial__author">
+                <div class="testimonial__avatar">
+                  <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?q=80&w=100&auto=format&fit=crop" alt="Cliente" />
+                </div>
+                <div class="testimonial__info">
+                  <h4>Ana Martínez</h4>
+                  <span>Gerente, Policlínica JJ Vallarino</span>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Proceso de Trabajo -->
+    <section class="section">
+      <div class="container">
+        <h2 class="center reveal">Nuestro Proceso de Trabajo</h2>
+        <p class="center section__subtitle reveal delay-1">Cómo trabajamos para garantizar el éxito de tu proyecto</p>
+        <div class="grid grid--4 process">
+          <div class="process__step reveal">
+            <div class="process__number">01</div>
+            <div class="process__icon">
+              <i class="ri-customer-service-line"></i>
+            </div>
+            <h3>Consulta Inicial</h3>
+            <p>Escuchamos tus necesidades y evaluamos el proyecto para brindarte la mejor solución.</p>
+          </div>
+          <div class="process__step reveal delay-1">
+            <div class="process__number">02</div>
+            <div class="process__icon">
+              <i class="ri-file-list-line"></i>
+            </div>
+            <h3>Cotización</h3>
+            <p>Preparamos una propuesta detallada con costos, materiales y cronograma de trabajo.</p>
+          </div>
+          <div class="process__step reveal delay-2">
+            <div class="process__number">03</div>
+            <div class="process__icon">
+              <i class="ri-hammer-line"></i>
+            </div>
+            <h3>Ejecución</h3>
+            <p>Nuestro equipo especializado ejecuta el proyecto con los más altos estándares de calidad.</p>
+          </div>
+          <div class="process__step reveal delay-3">
+            <div class="process__number">04</div>
+            <div class="process__icon">
+              <i class="ri-check-double-line"></i>
+            </div>
+            <h3>Entrega</h3>
+            <p>Realizamos la entrega final con garantía y seguimiento post-obra para tu tranquilidad.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contacto -->
+    <section id="contacto" class="section section--muted">
+      <div class="container grid grid--2 contact">
+        <div class="reveal">
+          <h2>Contacto</h2>
+          <ul class="contact__list">
+            <li><i class="ri-map-pin-2-line"></i> Dirección: Las Cumbres, Panamá, Sector 6, Casa #37</li>
+            <li><i class="ri-phone-line"></i> Teléfono: <a href="tel:+50766875437">+507 6687-5437</a></li>
+            <li><i class="ri-mail-line"></i> Email: <a href="mailto:proyectos@constructorachacon.com">proyectos@constructorachacon.com</a></li>
+          </ul>
+          <form class="form" onsubmit="event.preventDefault(); alert('¡Gracias! Nos pondremos en contacto pronto.');">
+            <div class="form__row">
+              <input type="text" placeholder="Nombre" required />
+              <input type="tel" placeholder="Teléfono" required />
+            </div>
+            <input type="email" placeholder="Correo electrónico" required />
+            <textarea placeholder="Cuéntanos sobre tu proyecto" rows="4" required></textarea>
+            <button class="btn btn--accent" type="submit">Enviar</button>
+          </form>
+        </div>
+        <div class="map reveal delay-1">
+          <iframe title="Ubicación Constructora Chacón" src="https://www.google.com/maps?q=Las%20Cumbres%2C%20Panam%C3%A1&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__content">
+        <div class="footer__section">
+          <div class="footer__brand">
+            <img src="1000338917.png" alt="Constructora Chacón, S.A." class="footer__logo" />
+            <h3>Constructora Chacón, S.A.</h3>
+          </div>
+          <p class="footer__description">Más de una década construyendo el futuro de Panamá con compromiso, calidad y responsabilidad.</p>
+          <div class="footer__social">
+            <a href="https://wa.me/50766875437" target="_blank" rel="noopener" aria-label="WhatsApp">
+              <i class="ri-whatsapp-line"></i>
+            </a>
+            <a href="mailto:proyectos@constructorachacon.com" aria-label="Email">
+              <i class="ri-mail-line"></i>
+            </a>
+            <a href="tel:+50766875437" aria-label="Teléfono">
+              <i class="ri-phone-line"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div class="footer__section">
+          <h4>Servicios</h4>
+          <ul class="footer__links">
+            <li><a href="#servicios">Albañilería</a></li>
+            <li><a href="#servicios">Soldadura</a></li>
+            <li><a href="#servicios">Techos</a></li>
+            <li><a href="#servicios">Muros</a></li>
+            <li><a href="#servicios">Vías y Cunetas</a></li>
+            <li><a href="#servicios">Cercas</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer__section">
+          <h4>Empresa</h4>
+          <ul class="footer__links">
+            <li><a href="#sobre">Sobre Nosotros</a></li>
+            <li><a href="#valores">Nuestros Valores</a></li>
+            <li><a href="#experiencia">Proyectos</a></li>
+            <li><a href="#equipo">Equipo</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer__section">
+          <h4>Contacto</h4>
+          <div class="footer__contact">
+            <p><i class="ri-map-pin-2-line"></i> Las Cumbres, Panamá, Sector 6, Casa #37</p>
+            <p><i class="ri-phone-line"></i> <a href="tel:+50766875437">+507 6687-5437</a></p>
+            <p><i class="ri-mail-line"></i> <a href="mailto:proyectos@constructorachacon.com">proyectos@constructorachacon.com</a></p>
+            <p><i class="ri-time-line"></i> Lun - Vie: 7:00 AM - 5:00 PM</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer__bottom">
+        <div class="footer__certifications">
+          <span><i class="ri-award-line"></i> Registrado ante JTIA</span>
+          <span><i class="ri-shield-check-line"></i> Certificado de Calidad</span>
+          <span><i class="ri-medal-line"></i> 10+ Años de Experiencia</span>
+        </div>
+        <div class="footer__copy">
+          <p>Gracias por confiar en nosotros. ¡Juntos construimos futuro!</p>
+          <p class="small">© 2025 Constructora Chacón, S.A. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp Floating Button -->
+  <a class="whatsapp" href="https://wa.me/50766875437" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <i class="ri-whatsapp-line"></i>
+  </a>
+
+  <!-- Authentication Modals -->
+  <!-- Login Modal -->
+  <div class="modal" id="loginModal">
+    <div class="modal__content">
+      <div class="modal__header">
+        <h2>Iniciar Sesión</h2>
+        <button class="modal__close" id="closeLoginModal"><i class="ri-close-line"></i></button>
+      </div>
+      <form class="auth__form" id="loginForm">
+        <div class="form__group">
+          <label for="loginEmail">Correo Electrónico</label>
+          <input type="email" id="loginEmail" required>
+        </div>
+        <div class="form__group">
+          <label for="loginPassword">Contraseña</label>
+          <input type="password" id="loginPassword" required>
+        </div>
+        <button type="submit" class="btn btn--accent">Iniciar Sesión</button>
+        <p class="auth__switch">¿No tienes cuenta? <a href="#" id="showRegister">Regístrate aquí</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div class="modal" id="registerModal">
+    <div class="modal__content">
+      <div class="modal__header">
+        <h2>Registrarse</h2>
+        <button class="modal__close" id="closeRegisterModal"><i class="ri-close-line"></i></button>
+      </div>
+      <form class="auth__form" id="registerForm">
+        <div class="form__group">
+          <label for="registerName">Nombre completo</label>
+          <input type="text" id="registerName" required>
+        </div>
+        <div class="form__group">
+          <label for="registerRole">Tipo de usuario</label>
+          <select id="registerRole" required>
+            <option value="cliente">Cliente</option>
+            <option value="trabajador">Trabajador</option>
+          </select>
+        </div>
+        <div class="form__group">
+          <label for="registerEmail">Correo Electrónico</label>
+          <input type="email" id="registerEmail" required>
+        </div>
+        <div class="form__group">
+          <label for="registerPassword">Contraseña</label>
+          <input type="password" id="registerPassword" required minlength="6">
+        </div>
+        <div class="form__group">
+          <label for="confirmPassword">Confirmar Contraseña</label>
+          <input type="password" id="confirmPassword" required>
+        </div>
+        <button type="submit" class="btn btn--accent">Registrarse</button>
+        <p class="small">Si eliges "Trabajador", completa tu postulación en <a href="trabaja.html">Trabaja con nosotros</a>.</p>
+        <p class="auth__switch">¿Ya tienes cuenta? <a href="#" id="showLogin">Inicia sesión aquí</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="comp.js"></script>
+  <script src="auth.js"></script>
+</body>
+</html>
+
+

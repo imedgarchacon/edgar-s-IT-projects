@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calculadora de Presupuesto — Constructora Chacón</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+    const firebaseConfig = { apiKey: "AIzaSyAn-DHOCtzdd1Uheo_AJQ0vjZh3Rt3G_r8", authDomain: "constructora-ch.firebaseapp.com", projectId: "constructora-ch", storageBucket: "constructora-ch.firebasestorage.app", messagingSenderId: "359610922559", appId: "1:359610922559:web:ac83f5e9407bf758a92a8a" };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    onAuthStateChanged(auth, (user)=>{
+      const gate = document.getElementById('authGate');
+      const shell = document.getElementById('appShell');
+      if(user){ gate.style.display='none'; shell.style.display='block'; }
+      else { gate.style.display='grid'; shell.style.display='none'; }
+    });
+  </script>
+  <style>.calc{padding:32px 0;margin-top:90px}.result{margin-top:16px;background:#fff;border:1px solid rgba(0,40,85,.12);border-radius:12px;padding:16px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}@media(max-width:900px){.grid2{grid-template-columns:1fr}}</style>
+  <script>
+    function formatUSD(n){return new Intl.NumberFormat('es-PA',{style:'currency',currency:'USD'}).format(n)}
+    function calcBudget(e){
+      e.preventDefault();
+      const obra = document.getElementById('obra').value;
+      const material = document.getElementById('material').value;
+      const m2 = parseFloat(document.getElementById('m2').value||'0');
+      const complejidad = parseFloat(document.getElementById('complejidad').value);
+      const ubicacion = document.getElementById('ubicacion').value;
+      const plazo = parseInt(document.getElementById('plazo').value||'0');
+      const demol = document.getElementById('demolicion').checked;
+      const transporte = document.getElementById('transporte').checked;
+      const acabados = document.getElementById('acabados').checked;
+      const iva = document.getElementById('iva').checked;
+      // costos base por m2
+      const base = { albanileria: 45, soldadura: 60, techos: 55, muros: 50, vias: 65, cercas: 40 }[obra] || 50;
+      const matFactor = { economico: 0.9, estandar: 1, premium: 1.2 }[material] || 1;
+      const manoObra = 0.35; // 35% mano de obra
+      const indirectos = 0.12; // 12% indirectos
+      const utilidad = 0.15; // 15% utilidad
+      let costoDirecto = base * matFactor * m2 * complejidad;
+      // extras
+      if (demol) costoDirecto += 8 * m2;
+      if (transporte) costoDirecto += 3.5 * m2;
+      if (acabados) costoDirecto += 12 * m2;
+      // ajuste por ubicación/plazo
+      if (ubicacion.toLowerCase().includes('interior')) costoDirecto *= 1.05;
+      if (plazo && plazo < 30) costoDirecto *= 1.08; // urgencia
+      const costoMano = costoDirecto * manoObra;
+      const subtotal = costoDirecto + costoMano;
+      const costoIndirectos = subtotal * indirectos;
+      let total = (subtotal + costoIndirectos) * (1 + utilidad);
+      if (iva) total *= 1.07;
+      document.getElementById('resTotal').textContent = formatUSD(total);
+      document.getElementById('resBreak').innerHTML = `
+        <li>Costos directos: <strong>${formatUSD(costoDirecto)}</strong></li>
+        <li>Mano de obra (35%): <strong>${formatUSD(costoMano)}</strong></li>
+        <li>Indirectos (12%): <strong>${formatUSD(costoIndirectos)}</strong></li>
+        <li>Utilidad (15%): <strong>${formatUSD((subtotal + costoIndirectos)*0.15)}</strong></li>
+        ${iva ? '<li>ITBMS (7%): <strong>incluido</strong></li>' : ''}
+        <li>Plazo estimado: <strong>${plazo||'—'} días</strong></li>
+        <li>Ubicación: <strong>${ubicacion||'—'}</strong></li>`;
+      document.getElementById('cotiza').style.display = 'block';
+    }
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html#inicio" class="brand">
+        <img src="components/img/logoCH.png" alt="Constructora Chacón" class="brand__logo" />
+      </a>
+      <nav class="nav" aria-label="Principal">
+        <button class="nav__toggle" aria-label="Abrir menú"><i class="ri-menu-line"></i></button>
+        <ul class="nav__list">
+          <li><a href="index.html#servicios">Servicios</a></li>
+          <li><a href="trabaja.html">Trabaja</a></li>
+          <li><a href="visor3d.html">Visor 3D</a></li>
+          <li><a href="index.html#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+      <div class="header__actions">
+        <a class="btn btn--primary" href="index.html#inicio">Inicio</a>
+      </div>
+    </div>
+  </header>
+
+  <div id="authGate" style="display:none;place-items:center;min-height:60vh;text-align:center;padding:24px">
+    <div>
+      <h1 style="margin:0 0 8px;color:#002855">Acceso restringido</h1>
+      <p>Inicia sesión o regístrate para usar la calculadora.</p>
+      <a href="index.html#inicio" class="btn btn--accent" style="margin-top:12px">Ir al inicio</a>
+    </div>
+  </div>
+
+  <div id="appShell" style="display:none">
+  <main class="calc">
+    <div class="container">
+      <h1>Calculadora de presupuesto</h1>
+      <p>Obtén un estimado por tipo de obra, materiales y metros cuadrados. Para algo más específico, solicita una cotización.</p>
+      <div class="grid" style="grid-template-columns:1.1fr .9fr;gap:18px;align-items:start">
+      <form class="form" onsubmit="calcBudget(event)">
+        <div class="form__row">
+          <select id="obra" required>
+            <option value="albanileria">Albañilería</option>
+            <option value="soldadura">Soldadura</option>
+            <option value="techos">Techos</option>
+            <option value="muros">Muros</option>
+            <option value="vias">Vías y cunetas</option>
+            <option value="cercas">Cercas</option>
+          </select>
+          <select id="material" required>
+            <option value="economico">Económico</option>
+            <option value="estandar">Estándar</option>
+            <option value="premium">Premium</option>
+          </select>
+        </div>
+        <div class="form__row">
+          <input id="m2" type="number" step="0.01" min="1" placeholder="Metros cuadrados" required />
+          <select id="complejidad" required>
+            <option value="0.9">Sencillo</option>
+            <option value="1">Normal</option>
+            <option value="1.2">Complejo</option>
+          </select>
+        </div>
+        <div class="grid2">
+          <input id="ubicacion" type="text" placeholder="Ubicación (ciudad/interior)" />
+          <input id="plazo" type="number" min="1" step="1" placeholder="Plazo estimado (días)" />
+        </div>
+        <div class="grid2">
+          <label style="display:flex;align-items:center;gap:8px"><input id="demolicion" type="checkbox"/> Incluir demolición</label>
+          <label style="display:flex;align-items:center;gap:8px"><input id="transporte" type="checkbox"/> Incluir transporte</label>
+          <label style="display:flex;align-items:center;gap:8px"><input id="acabados" type="checkbox"/> Incluir acabados</label>
+          <label style="display:flex;align-items:center;gap:8px"><input id="iva" type="checkbox"/> Incluir ITBMS (7%)</label>
+        </div>
+        <button class="btn btn--accent">Calcular</button>
+      </form>
+      <div class="result">
+        <h3>Total estimado: <span id="resTotal">—</span></h3>
+        <ul id="resBreak" style="margin:0;padding-left:18px"></ul>
+        <div id="cotiza" style="display:none;margin-top:12px">
+          <a class="btn btn--ghost" href="index.html#contacto">Solicitar cotización específica</a>
+        </div>
+      </div>
+      <div>
+        <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1600&auto=format&fit=crop" alt="Obra residencial" style="border-radius:16px;box-shadow:var(--shadow);margin-bottom:12px"/>
+      </div>
+      </div>
+    </div>
+  </main>
+  </div>
+
+  <script src="comp.js"></script>
+</body>
+</html>
+
+

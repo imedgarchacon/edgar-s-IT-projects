@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trabaja con Nosotros — Constructora Chacón</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .job-hero{padding-top:90px;background:linear-gradient(135deg, var(--blue), #003366);color:#fff;text-align:center;padding-bottom:30px}
+    .job-hero h1{margin:0}
+    .job-wrap{padding:32px 0}
+    .benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+    .benefit{background:#fff;border:1px solid rgba(0,40,85,.12);border-radius:14px;padding:14px;display:flex;gap:10px;align-items:flex-start}
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+    .step{background:#fff;border:1px solid rgba(0,40,85,.12);border-radius:14px;padding:14px}
+    @media(max-width:900px){
+      .benefits,.steps{grid-template-columns:1fr}
+    }
+  </style>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+    const firebaseConfig = { apiKey: "AIzaSyAn-DHOCtzdd1Uheo_AJQ0vjZh3Rt3G_r8", authDomain: "constructora-ch.firebaseapp.com", projectId: "constructora-ch", storageBucket: "constructora-ch.firebasestorage.app", messagingSenderId: "359610922559", appId: "1:359610922559:web:ac83f5e9407bf758a92a8a" };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    onAuthStateChanged(auth, (user)=>{
+      const gate = document.getElementById('authGate');
+      const shell = document.getElementById('appShell');
+      const badge = document.getElementById('loginHint');
+      if(user){
+        gate.style.display = 'none';
+        shell.style.display = 'block';
+        let name = user.displayName || '';
+        try{ const raw = localStorage.getItem(`user_meta_${user.uid}`); if(raw && !name) name = JSON.parse(raw).name || ''; }catch(_){ }
+        document.getElementById('applicantName').value = name || '';
+        document.getElementById('applicantEmail').value = user.email || '';
+        badge.style.display = 'none';
+      } else {
+        gate.style.display = 'grid';
+        shell.style.display = 'none';
+        badge.style.display = 'block';
+      }
+    });
+    window.submitApplication = (e)=>{
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        name: form.applicantName.value,
+        email: form.applicantEmail.value,
+        phone: form.applicantPhone.value,
+        location: form.applicantLocation.value,
+        role: form.applicantRole.value,
+        experience: form.applicantExperience.value,
+        createdAt: new Date().toISOString()
+      };
+      try{
+        const list = JSON.parse(localStorage.getItem('worker_applications')||'[]');
+        list.push(data);
+        localStorage.setItem('worker_applications', JSON.stringify(list));
+        alert('¡Gracias! Tu postulación ha sido recibida.');
+        form.reset();
+      }catch(err){
+        alert('No se pudo guardar localmente. Intenta nuevamente.');
+        console.error(err);
+      }
+    };
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html#inicio" class="brand">
+        <img src="components/img/logoCH.png" alt="Constructora Chacón" class="brand__logo" />
+      </a>
+      <nav class="nav" aria-label="Principal">
+        <button class="nav__toggle" aria-label="Abrir menú"><i class="ri-menu-line"></i></button>
+        <ul class="nav__list">
+          <li><a href="index.html#servicios">Servicios</a></li>
+          <li><a href="presupuesto.html">Presupuesto</a></li>
+          <li><a href="index.html#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+      <div class="header__actions">
+        <a class="btn btn--primary" href="index.html#inicio">Inicio</a>
+      </div>
+    </div>
+  </header>
+
+  <div id="authGate" style="display:none;place-items:center;min-height:60vh;text-align:center;padding:24px">
+    <div>
+      <h1 style="margin:0 0 8px;color:#002855">Acceso restringido</h1>
+      <p>Inicia sesión o regístrate para postularte.</p>
+      <a href="index.html#inicio" class="btn btn--accent" style="margin-top:12px">Ir al inicio</a>
+    </div>
+  </div>
+
+  <div id="appShell" style="display:none">
+  <section class="job-hero">
+    <div class="container">
+      <h1>Trabaja con nosotros</h1>
+      <p>Postúlate como trabajador y forma parte de nuestros proyectos en Panamá.</p>
+    </div>
+  </section>
+
+  <main class="job-wrap">
+    <div class="container">
+      <div id="loginHint" class="badge" style="display:none;margin-bottom:12px">Sugerencia: inicia sesión para autocompletar tus datos</div>
+      <div class="grid" style="grid-template-columns:1.2fr .8fr;gap:18px;align-items:start">
+      <form class="form" onsubmit="submitApplication(event)">
+        <div class="form__row">
+          <input id="applicantName" name="applicantName" type="text" placeholder="Nombre completo" required />
+          <input id="applicantEmail" name="applicantEmail" type="email" placeholder="Correo" required />
+        </div>
+        <div class="form__row">
+          <input id="applicantPhone" name="applicantPhone" type="tel" placeholder="Teléfono" required />
+          <input id="applicantLocation" name="applicantLocation" type="text" placeholder="¿De qué parte de Panamá?" required />
+        </div>
+        <div class="form__row">
+          <select id="applicantRole" name="applicantRole" required>
+            <option value="Albañil">Albañil</option>
+            <option value="Soldador">Soldador</option>
+            <option value="Ayudante">Ayudante</option>
+            <option value="Maestro de Obra">Maestro de Obra</option>
+            <option value="Otro">Otro</option>
+          </select>
+          <input id="years" name="years" type="number" min="0" step="1" placeholder="Años de experiencia" required />
+        </div>
+        <div class="form__row">
+          <input id="availability" name="availability" type="text" placeholder="Disponibilidad (inmediata, 2 semanas...)" />
+          <input id="salary" name="salary" type="number" min="0" step="0.01" placeholder="Salario esperado (USD)" />
+        </div>
+        <div class="form__row">
+          <input id="linkedin" name="linkedin" type="url" placeholder="Perfil LinkedIn (opcional)" />
+          <input id="photo" name="photo" type="url" placeholder="URL Foto (opcional)" />
+        </div>
+        <div class="form__row">
+          <input id="cv" name="cv" type="url" placeholder="URL Currículum (PDF)" />
+          <input id="refs" name="refs" type="text" placeholder="Referencias (opcional)" />
+        </div>
+        <textarea id="applicantExperience" name="applicantExperience" rows="4" placeholder="Experiencia y habilidades" required></textarea>
+        <button class="btn btn--accent">Enviar postulación</button>
+      </form>
+      <div>
+        <img src="https://images.unsplash.com/photo-1577412647305-991150c7d163?q=80&w=1600&auto=format&fit=crop" alt="Obra en construcción" style="border-radius:16px;box-shadow:var(--shadow);margin-bottom:12px"/>
+      </div>
+      </div>
+      
+      <h2 style="margin-top:22px">Beneficios</h2>
+      <div class="benefits">
+        <div class="benefit"><i class="ri-medal-line" style="color:var(--gold);font-size:22px"></i><div><strong>Pagos puntuales</strong><br/>Cumplimos con cronogramas de pago y bonificaciones por rendimiento.</div></div>
+        <div class="benefit"><i class="ri-shield-check-line" style="color:var(--gold);font-size:22px"></i><div><strong>Seguridad</strong><br/>Equipos y protocolos de seguridad en todas las obras.</div></div>
+        <div class="benefit"><i class="ri-graduation-cap-line" style="color:var(--gold);font-size:22px"></i><div><strong>Crecimiento</strong><br/>Capacitaciones y oportunidades de ascenso.</div></div>
+      </div>
+
+      <h2 style="margin-top:22px">Proceso de selección</h2>
+      <div class="steps">
+        <div class="step"><strong>1. Postulación</strong><br/>Completa el formulario con tus datos y experiencia.</div>
+        <div class="step"><strong>2. Evaluación</strong><br/>Revisamos tu perfil y nos comunicamos contigo.</div>
+        <div class="step"><strong>3. Asignación</strong><br/>Te integramos a un proyecto acorde a tu perfil.</div>
+      </div>
+    </div>
+  </main>
+  </div>
+
+  <script src="comp.js"></script>
+</body>
+</html>
+
+
