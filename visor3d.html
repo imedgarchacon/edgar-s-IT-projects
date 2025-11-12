@@ -17,19 +17,29 @@
   <header class="header">
     <div class="container header__inner">
       <a href="index.html#inicio" class="brand">
-        <img src="components/img/logoCH.png" alt="Constructora Chacón" class="brand__logo" />
+        <img src="assets/logoCH.png" alt="Constructora Chacón" class="brand__logo" />
       </a>
       <nav class="nav" aria-label="Principal">
         <button class="nav__toggle" aria-label="Abrir menú"><i class="ri-menu-line"></i></button>
         <ul class="nav__list">
-          <li><a href="index.html#servicios">Servicios</a></li>
+          <li><a href="index.html#inicio">Inicio</a></li>
           <li><a href="presupuesto.html">Presupuesto</a></li>
-          <li><a href="trabaja.html">Trabaja</a></li>
+          <li><a href="trabaja.html">Trabaja con nosotros</a></li>
           <li><a href="index.html#contacto">Contacto</a></li>
         </ul>
       </nav>
       <div class="header__actions">
-        <a class="btn btn--primary" href="index.html#inicio">Inicio</a>
+        <div class="auth__buttons" id="authButtons">
+          <button class="btn btn--primary" id="loginBtn">Iniciar Sesión</button>
+          <button class="btn btn--accent" id="registerBtn">Registrarse</button>
+        </div>
+        <div class="user__menu" id="userMenu" style="display: none;">
+          <a href="dashboard.html" class="profile-chip" id="profileButton">
+            <span class="profile-chip__avatar" id="profileAvatar">CC</span>
+            <span class="profile-chip__name" id="profileName">Mi perfil</span>
+          </a>
+          <button class="btn btn--ghost" id="logoutBtn">Cerrar Sesión</button>
+        </div>
       </div>
     </div>
   </header>
@@ -44,6 +54,64 @@
   </main>
 
   <script src="comp.js"></script>
+  <script src="auth.js"></script>
+
+  <div class="modal" id="loginModal">
+    <div class="modal__content">
+      <div class="modal__header">
+        <h2>Iniciar Sesión</h2>
+        <button class="modal__close" id="closeLoginModal"><i class="ri-close-line"></i></button>
+      </div>
+      <form class="auth__form" id="loginForm">
+        <div class="form__group">
+          <label for="loginEmail">Correo Electrónico</label>
+          <input type="email" id="loginEmail" required>
+        </div>
+        <div class="form__group">
+          <label for="loginPassword">Contraseña</label>
+          <input type="password" id="loginPassword" required>
+        </div>
+        <button type="submit" class="btn btn--accent">Iniciar Sesión</button>
+        <p class="auth__switch">¿No tienes cuenta? <a href="#" id="showRegister">Regístrate aquí</a></p>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="registerModal">
+    <div class="modal__content">
+      <div class="modal__header">
+        <h2>Registrarse</h2>
+        <button class="modal__close" id="closeRegisterModal"><i class="ri-close-line"></i></button>
+      </div>
+      <form class="auth__form" id="registerForm">
+        <div class="form__group">
+          <label for="registerName">Nombre completo</label>
+          <input type="text" id="registerName" required>
+        </div>
+        <div class="form__group">
+          <label for="registerRole">Tipo de usuario</label>
+          <select id="registerRole" required>
+            <option value="cliente">Cliente</option>
+            <option value="trabajador">Trabajador</option>
+          </select>
+        </div>
+        <div class="form__group">
+          <label for="registerEmail">Correo Electrónico</label>
+          <input type="email" id="registerEmail" required>
+        </div>
+        <div class="form__group">
+          <label for="registerPassword">Contraseña</label>
+          <input type="password" id="registerPassword" required minlength="6">
+        </div>
+        <div class="form__group">
+          <label for="confirmPassword">Confirmar Contraseña</label>
+          <input type="password" id="confirmPassword" required>
+        </div>
+        <button type="submit" class="btn btn--accent">Registrarse</button>
+        <p class="auth__switch">¿Ya tienes cuenta? <a href="#" id="showLogin">Inicia sesión aquí</a></p>
+      </form>
+    </div>
+  </div>
 </body>
 </html>
 

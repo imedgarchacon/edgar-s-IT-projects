@@ -20,7 +20,166 @@
       else { gate.style.display='grid'; shell.style.display='none'; }
     });
   </script>
-  <style>.calc{padding:32px 0;margin-top:90px}.result{margin-top:16px;background:#fff;border:1px solid rgba(0,40,85,.12);border-radius:12px;padding:16px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}@media(max-width:900px){.grid2{grid-template-columns:1fr}}</style>
+  <style>
+    .calc {
+      padding: 120px 0 60px;
+    }
+    .calc__intro {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 24px 0 36px;
+    }
+    .calc__intro span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(0, 40, 85, 0.08);
+      color: #002855;
+      font-weight: 500;
+    }
+    .calc__intro span i {
+      color: var(--gold);
+      font-size: 1.1rem;
+    }
+    .calc__layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 32px;
+      align-items: start;
+    }
+    .calc__side {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .calc__result {
+      background: #fff;
+      border: 1px solid rgba(0,40,85,0.12);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 18px 40px rgba(0,40,85,0.08);
+    }
+    .calc__result h3 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      color: #002855;
+      font-size: 1.4rem;
+    }
+    .calc__result ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+    .calc__result li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.95rem;
+    }
+    .calc__result li span {
+      flex: 1;
+    }
+    .calc__result li i {
+      color: var(--gold);
+      font-size: 1.2rem;
+    }
+    .calc__visual img {
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+    .calc__insights {
+      display: grid;
+      gap: 12px;
+    }
+    .calc__insights div {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 14px 16px;
+      background: rgba(255, 179, 0, 0.12);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 179, 0, 0.25);
+      color: #002855;
+    }
+    .calc__insights i {
+      font-size: 1.4rem;
+      color: var(--gold);
+    }
+    .calc__how {
+      margin-top: 48px;
+    }
+    .calc__steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+    .calc-step {
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid rgba(0,40,85,0.1);
+      box-shadow: 0 12px 32px rgba(0,40,85,0.08);
+    }
+    .calc-step h3 {
+      margin: 12px 0 8px;
+      color: #002855;
+    }
+    .calc__disclaimer {
+      margin-top: 18px;
+      font-size: 0.95rem;
+      color: rgba(32,48,67,0.85);
+      background: rgba(0,40,85,0.05);
+      padding: 14px 18px;
+      border-radius: 16px;
+    }
+    .grid2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+    }
+    .calc__options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+      margin: 12px 0;
+    }
+    .calc__options label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px;
+      border: 1px solid rgba(255,179,0,0.35);
+      border-radius: 12px;
+      background: rgba(255,179,0,0.08);
+      font-size: 0.9rem;
+    }
+    .calc__options input {
+      accent-color: var(--gold);
+      margin: 0;
+    }
+    @media(max-width: 1024px) {
+      .calc__layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media(max-width: 900px) {
+      .grid2, .calc__options {
+        grid-template-columns: 1fr;
+      }
+      .calc__steps {
+        grid-template-columns: 1fr;
+      }
+      .calc {
+        padding-top: 110px;
+      }
+    }
+  </style>
   <script>
     function formatUSD(n){return new Intl.NumberFormat('es-PA',{style:'currency',currency:'USD'}).format(n)}
     function calcBudget(e){
@@ -56,13 +215,13 @@
       if (iva) total *= 1.07;
       document.getElementById('resTotal').textContent = formatUSD(total);
       document.getElementById('resBreak').innerHTML = `
-        <li>Costos directos: <strong>${formatUSD(costoDirecto)}</strong></li>
-        <li>Mano de obra (35%): <strong>${formatUSD(costoMano)}</strong></li>
-        <li>Indirectos (12%): <strong>${formatUSD(costoIndirectos)}</strong></li>
-        <li>Utilidad (15%): <strong>${formatUSD((subtotal + costoIndirectos)*0.15)}</strong></li>
-        ${iva ? '<li>ITBMS (7%): <strong>incluido</strong></li>' : ''}
-        <li>Plazo estimado: <strong>${plazo||'—'} días</strong></li>
-        <li>Ubicación: <strong>${ubicacion||'—'}</strong></li>`;
+        <li><i class="ri-tools-line"></i><span>Costos directos: <strong>${formatUSD(costoDirecto)}</strong></span></li>
+        <li><i class="ri-team-line"></i><span>Mano de obra (35%): <strong>${formatUSD(costoMano)}</strong></span></li>
+        <li><i class="ri-bar-chart-line"></i><span>Indirectos (12%): <strong>${formatUSD(costoIndirectos)}</strong></span></li>
+        <li><i class="ri-copper-coin-line"></i><span>Utilidad (15%): <strong>${formatUSD((subtotal + costoIndirectos)*0.15)}</strong></span></li>
+        ${iva ? '<li><i class="ri-bill-line"></i><span>ITBMS (7%): <strong>incluido</strong></span></li>' : ''}
+        <li><i class="ri-timer-line"></i><span>Plazo estimado: <strong>${plazo||'—'} días</strong></span></li>
+        <li><i class="ri-map-pin-line"></i><span>Ubicación: <strong>${ubicacion||'—'}</strong></span></li>`;
       document.getElementById('cotiza').style.display = 'block';
     }
   </script>
@@ -71,19 +230,29 @@
   <header class="header">
     <div class="container header__inner">
       <a href="index.html#inicio" class="brand">
-        <img src="components/img/logoCH.png" alt="Constructora Chacón" class="brand__logo" />
+        <img src="assets/logoCH.png" alt="Constructora Chacón" class="brand__logo" />
       </a>
       <nav class="nav" aria-label="Principal">
         <button class="nav__toggle" aria-label="Abrir menú"><i class="ri-menu-line"></i></button>
         <ul class="nav__list">
-          <li><a href="index.html#servicios">Servicios</a></li>
-          <li><a href="trabaja.html">Trabaja</a></li>
-          <li><a href="visor3d.html">Visor 3D</a></li>
+          <li><a href="index.html#inicio">Inicio</a></li>
+          <li><a href="trabaja.html">Trabaja con nosotros</a></li>
+          <li><a href="#presupuesto">Presupuesto</a></li>
           <li><a href="index.html#contacto">Contacto</a></li>
         </ul>
       </nav>
       <div class="header__actions">
-        <a class="btn btn--primary" href="index.html#inicio">Inicio</a>
+        <div class="auth__buttons" id="authButtons">
+          <button class="btn btn--primary" id="loginBtn">Iniciar Sesión</button>
+          <button class="btn btn--accent" id="registerBtn">Registrarse</button>
+        </div>
+        <div class="user__menu" id="userMenu" style="display: none;">
+          <a href="dashboard.html" class="profile-chip" id="profileButton">
+            <span class="profile-chip__avatar" id="profileAvatar">CC</span>
+            <span class="profile-chip__name" id="profileName">Mi perfil</span>
+          </a>
+          <button class="btn btn--ghost" id="logoutBtn">Cerrar Sesión</button>
+        </div>
       </div>
     </div>
   </header>
@@ -97,63 +266,156 @@
   </div>
 
   <div id="appShell" style="display:none">
-  <main class="calc">
+  <main class="calc" id="presupuesto">
     <div class="container">
       <h1>Calculadora de presupuesto</h1>
-      <p>Obtén un estimado por tipo de obra, materiales y metros cuadrados. Para algo más específico, solicita una cotización.</p>
-      <div class="grid" style="grid-template-columns:1.1fr .9fr;gap:18px;align-items:start">
-      <form class="form" onsubmit="calcBudget(event)">
-        <div class="form__row">
-          <select id="obra" required>
-            <option value="albanileria">Albañilería</option>
-            <option value="soldadura">Soldadura</option>
-            <option value="techos">Techos</option>
-            <option value="muros">Muros</option>
-            <option value="vias">Vías y cunetas</option>
-            <option value="cercas">Cercas</option>
-          </select>
-          <select id="material" required>
-            <option value="economico">Económico</option>
-            <option value="estandar">Estándar</option>
-            <option value="premium">Premium</option>
-          </select>
-        </div>
-        <div class="form__row">
-          <input id="m2" type="number" step="0.01" min="1" placeholder="Metros cuadrados" required />
-          <select id="complejidad" required>
-            <option value="0.9">Sencillo</option>
-            <option value="1">Normal</option>
-            <option value="1.2">Complejo</option>
-          </select>
-        </div>
-        <div class="grid2">
-          <input id="ubicacion" type="text" placeholder="Ubicación (ciudad/interior)" />
-          <input id="plazo" type="number" min="1" step="1" placeholder="Plazo estimado (días)" />
-        </div>
-        <div class="grid2">
-          <label style="display:flex;align-items:center;gap:8px"><input id="demolicion" type="checkbox"/> Incluir demolición</label>
-          <label style="display:flex;align-items:center;gap:8px"><input id="transporte" type="checkbox"/> Incluir transporte</label>
-          <label style="display:flex;align-items:center;gap:8px"><input id="acabados" type="checkbox"/> Incluir acabados</label>
-          <label style="display:flex;align-items:center;gap:8px"><input id="iva" type="checkbox"/> Incluir ITBMS (7%)</label>
-        </div>
-        <button class="btn btn--accent">Calcular</button>
-      </form>
-      <div class="result">
-        <h3>Total estimado: <span id="resTotal">—</span></h3>
-        <ul id="resBreak" style="margin:0;padding-left:18px"></ul>
-        <div id="cotiza" style="display:none;margin-top:12px">
-          <a class="btn btn--ghost" href="index.html#contacto">Solicitar cotización específica</a>
+      <p>Obtén un estimado ajustado a tu tipo de obra, materiales y alcance. Nuestro equipo revisa cada solicitud para entregarte una propuesta final personalizada.</p>
+      <div class="calc__intro">
+        <span><i class="ri-calculator-line"></i> Estimación en segundos</span>
+        <span><i class="ri-building-3-line"></i> Obras residenciales e infraestructura</span>
+        <span><i class="ri-shield-check-line"></i> Basado en costos reales de campo</span>
+      </div>
+      <div class="calc__layout">
+        <form class="form calc__form" onsubmit="calcBudget(event)">
+          <div class="form__row">
+            <select id="obra" required>
+              <option value="albanileria">Albañilería</option>
+              <option value="soldadura">Soldadura</option>
+              <option value="techos">Techos</option>
+              <option value="muros">Muros</option>
+              <option value="vias">Vías y cunetas</option>
+              <option value="cercas">Cercas</option>
+            </select>
+            <select id="material" required>
+              <option value="economico">Económico</option>
+              <option value="estandar">Estándar</option>
+              <option value="premium">Premium</option>
+            </select>
+          </div>
+          <div class="form__row">
+            <input id="m2" type="number" step="0.01" min="1" placeholder="Metros cuadrados" required />
+            <select id="complejidad" required>
+              <option value="0.9">Sencillo</option>
+              <option value="1">Normal</option>
+              <option value="1.2">Complejo</option>
+            </select>
+          </div>
+          <div class="grid2">
+            <input id="ubicacion" type="text" placeholder="Ubicación (ciudad/interior)" />
+            <input id="plazo" type="number" min="1" step="1" placeholder="Plazo estimado (días)" />
+          </div>
+          <div class="calc__options">
+            <label><input id="demolicion" type="checkbox"/> Demolición previa</label>
+            <label><input id="transporte" type="checkbox"/> Transporte y logística</label>
+            <label><input id="acabados" type="checkbox"/> Acabados premium</label>
+            <label><input id="iva" type="checkbox"/> Incluir ITBMS (7%)</label>
+          </div>
+          <button class="btn btn--accent">Calcular</button>
+        </form>
+        <div class="calc__side">
+          <div class="calc__result">
+            <h3>Total estimado</h3>
+            <div style="font-size:2rem;font-weight:700;color:var(--blue);margin-bottom:16px" id="resTotal">—</div>
+            <ul id="resBreak"></ul>
+            <div id="cotiza" style="display:none;margin-top:16px">
+              <a class="btn btn--ghost" href="index.html#contacto">Solicitar cotización específica</a>
+            </div>
+          </div>
+          <div class="calc__insights">
+            <div><i class="ri-money-dollar-circle-line"></i>Incluye mano de obra, indirectos y utilidad para una proyección realista.</div>
+            <div><i class="ri-draft-line"></i>Perfecto para validar presupuestos, licitaciones o planificar inversiones.</div>
+          </div>
+          <div class="calc__visual">
+            <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1600&auto=format&fit=crop" alt="Obra residencial" />
+          </div>
         </div>
       </div>
-      <div>
-        <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1600&auto=format&fit=crop" alt="Obra residencial" style="border-radius:16px;box-shadow:var(--shadow);margin-bottom:12px"/>
-      </div>
+
+      <div class="calc__how">
+        <h2>¿Cómo interpretamos tu estimación?</h2>
+        <div class="calc__steps">
+          <article class="calc-step">
+            <i class="ri-survey-line" style="font-size:2rem;color:var(--gold);"></i>
+            <h3>1. Alcance y medición</h3>
+            <p>Validamos metrajes, tipo de obra y complejidad para confirmar la base del presupuesto.</p>
+          </article>
+          <article class="calc-step">
+            <i class="ri-pie-chart-2-line" style="font-size:2rem;color:var(--gold);"></i>
+            <h3>2. Ajustes técnicos</h3>
+            <p>Revisamos costos directos, extras solicitados y cronograma para optimizar la propuesta.</p>
+          </article>
+          <article class="calc-step">
+            <i class="ri-hand-coin-line" style="font-size:2rem;color:var(--gold);"></i>
+            <h3>3. Oferta final</h3>
+            <p>Presentamos un presupuesto formal con entregables, garantías y formas de pago claras.</p>
+          </article>
+        </div>
+        <p class="calc__disclaimer"><strong>Importante:</strong> El valor final puede variar según condiciones del terreno, accesos, disponibilidad de materiales y actualizaciones de precios. Nuestro equipo te acompaña para ajustar cada detalle y garantizar transparencia.</p>
       </div>
     </div>
   </main>
   </div>
 
   <script src="comp.js"></script>
+  <script src="auth.js"></script>
+
+  <div class="modal" id="loginModal">
+    <div class="modal__content">
+      <div class="modal__header">
+        <h2>Iniciar Sesión</h2>
+        <button class="modal__close" id="closeLoginModal"><i class="ri-close-line"></i></button>
+      </div>
+      <form class="auth__form" id="loginForm">
+        <div class="form__group">
+          <label for="loginEmail">Correo Electrónico</label>
+          <input type="email" id="loginEmail" required>
+        </div>
+        <div class="form__group">
+          <label for="loginPassword">Contraseña</label>
+          <input type="password" id="loginPassword" required>
+        </div>
+        <button type="submit" class="btn btn--accent">Iniciar Sesión</button>
+        <p class="auth__switch">¿No tienes cuenta? <a href="#" id="showRegister">Regístrate aquí</a></p>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="registerModal">
+    <div class="modal__content">
+      <div class="modal__header">
+        <h2>Registrarse</h2>
+        <button class="modal__close" id="closeRegisterModal"><i class="ri-close-line"></i></button>
+      </div>
+      <form class="auth__form" id="registerForm">
+        <div class="form__group">
+          <label for="registerName">Nombre completo</label>
+          <input type="text" id="registerName" required>
+        </div>
+        <div class="form__group">
+          <label for="registerRole">Tipo de usuario</label>
+          <select id="registerRole" required>
+            <option value="cliente">Cliente</option>
+            <option value="trabajador">Trabajador</option>
+          </select>
+        </div>
+        <div class="form__group">
+          <label for="registerEmail">Correo Electrónico</label>
+          <input type="email" id="registerEmail" required>
+        </div>
+        <div class="form__group">
+          <label for="registerPassword">Contraseña</label>
+          <input type="password" id="registerPassword" required minlength="6">
+        </div>
+        <div class="form__group">
+          <label for="confirmPassword">Confirmar Contraseña</label>
+          <input type="password" id="confirmPassword" required>
+        </div>
+        <button type="submit" class="btn btn--accent">Registrarse</button>
+        <p class="small">Al registrarte puedes guardar presupuestos y dar seguimiento.</p>
+        <p class="auth__switch">¿Ya tienes cuenta? <a href="#" id="showLogin">Inicia sesión aquí</a></p>
+      </form>
+    </div>
+  </div>
 </body>
 </html>
 

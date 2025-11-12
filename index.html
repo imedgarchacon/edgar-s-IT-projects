@@ -45,13 +45,12 @@
   <header class="header">
     <div class="container header__inner">
       <a href="#inicio" class="brand">
-        <img src="components/img/logoCH.png" alt="Constructora Chacón, S.A." class="brand__logo" />
+        <img src="assets/logoCH.png" alt="Constructora Chacón, S.A." class="brand__logo" />
       </a>
       <nav class="nav" aria-label="Principal">
         <button class="nav__toggle" aria-label="Abrir menú"><i class="ri-menu-line"></i></button>
         <ul class="nav__list">
           <li><a href="#inicio">Inicio</a></li>
-          <li><a href="#servicios">Servicios</a></li>
           <li><a href="presupuesto.html">Presupuesto</a></li>
           <li><a href="trabaja.html">Trabaja con nosotros</a></li>
           <li><a href="#contacto">Contacto</a></li>
@@ -59,14 +58,16 @@
       </nav>
       <div class="header__actions">
         <div class="auth__buttons" id="authButtons">
-          <button class="btn btn--ghost" id="loginBtn">Iniciar Sesión</button>
+          <button class="btn btn--primary" id="loginBtn">Iniciar Sesión</button>
           <button class="btn btn--accent" id="registerBtn">Registrarse</button>
         </div>
         <div class="user__menu" id="userMenu" style="display: none;">
-          <span class="user__email" id="userEmail"></span>
+          <a href="dashboard.html" class="profile-chip" id="profileButton">
+            <span class="profile-chip__avatar" id="profileAvatar">CC</span>
+            <span class="profile-chip__name" id="profileName">Mi perfil</span>
+          </a>
           <button class="btn btn--ghost" id="logoutBtn">Cerrar Sesión</button>
         </div>
-        <a class="btn btn--primary" href="#contacto">Cotizar</a>
       </div>
     </div>
   </header>
@@ -114,22 +115,24 @@
         <h2 class="reveal center">Nuestros Valores</h2>
         <div class="grid grid--4 cards">
           <article class="card reveal">
-            <div class="card__icon">🏗️</div>
+            <div class="card__icon"><i class="ri-hand-coin-line" aria-hidden="true"></i></div>
             <h3>Compromiso</h3>
             <p>"Nos comprometemos con cada proyecto como si fuera nuestro, cumpliendo plazos y superando expectativas."</p>
           </article>
           <article class="card reveal delay-1">
-            <div class="card__icon">🧱</div>
+            <div class="card__icon"><i class="ri-shield-check-line" aria-hidden="true"></i></div>
             <h3>Garantía</h3>
             <p>"Utilizamos materiales de primera calidad y técnicas innovadoras para asegurar construcciones duraderas."</p>
           </article>
           <article class="card reveal delay-2">
-            <div class="card__icon">🦺</div>
+            <div class="card__icon">
+              <img src="assets/casco.png" alt="Icono de seguridad" />
+            </div>
             <h3>Seguridad</h3>
             <p>"Cuidamos la integridad de nuestros colaboradores y clientes aplicando protocolos internacionales de seguridad."</p>
           </article>
           <article class="card reveal delay-3">
-            <div class="card__icon">🌍</div>
+            <div class="card__icon"><i class="ri-earth-line" aria-hidden="true"></i></div>
             <h3>Responsabilidad</h3>
             <p>"Actuamos con transparencia, cuidamos el medio ambiente y contribuimos al desarrollo sostenible de Panamá."</p>
           </article>
@@ -143,41 +146,59 @@
         <h2 class="reveal center">Servicios</h2>
         <div class="grid grid--3 services">
           <article class="service reveal">
-            <div class="service__icon">🏗️</div>
+            <div class="service__icon">
+              <img src="assets/albanil.png" alt="Icono de albañilería" />
+            </div>
             <h3>Albañilería</h3>
             <p>"Construcciones básicas y remodelaciones sólidas, funcionales y estéticamente impecables."</p>
             <a href="#contacto" class="btn btn--ghost">Solicitar cotización</a>
           </article>
           <article class="service reveal delay-1">
-            <div class="service__icon">⚡</div>
+            <div class="service__icon"><i class="ri-fire-line" aria-hidden="true"></i></div>
             <h3>Soldadura</h3>
             <p>"Soldadura especializada para estructuras metálicas, cerramientos y barandales, con materiales de primera calidad."</p>
             <a href="#contacto" class="btn btn--ghost">Solicitar cotización</a>
           </article>
           <article class="service reveal delay-2">
-            <div class="service__icon">🏠</div>
+            <div class="service__icon"><i class="ri-home-gear-line" aria-hidden="true"></i></div>
             <h3>Techos</h3>
             <p>"Trabajamos con materiales resistentes que brindan seguridad ante condiciones climáticas extremas."</p>
             <a href="#contacto" class="btn btn--ghost">Solicitar cotización</a>
           </article>
           <article class="service reveal">
-            <div class="service__icon">🧱</div>
+            <div class="service__icon"><i class="ri-building-3-line" aria-hidden="true"></i></div>
             <h3>Muros</h3>
             <p>"Muros divisorios, decorativos y de contención, adaptados a las necesidades de cada proyecto."</p>
             <a href="#contacto" class="btn btn--ghost">Solicitar cotización</a>
           </article>
           <article class="service reveal delay-1">
-            <div class="service__icon">🛣️</div>
+            <div class="service__icon"><i class="ri-road-map-line" aria-hidden="true"></i></div>
             <h3>Vías y cunetas</h3>
             <p>"Obras que garantizan drenaje y transitabilidad, aportando al desarrollo comunitario."</p>
             <a href="#contacto" class="btn btn--ghost">Solicitar cotización</a>
           </article>
           <article class="service reveal delay-2">
-            <div class="service__icon">🚧</div>
+            <div class="service__icon"><i class="ri-refund-2-line" aria-hidden="true"></i></div>
             <h3>Cercas</h3>
             <p>"Cercas decorativas o de seguridad que combinan funcionalidad y estética."</p>
             <a href="#contacto" class="btn btn--ghost">Solicitar cotización</a>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Únete a Nuestro Equipo -->
+    <section class="section section--cta-work">
+      <div class="container">
+        <div class="work-cta">
+          <div class="work-cta__media reveal">
+            <img src="https://images.unsplash.com/photo-1523292562811-8fa7962a78c8?q=80&w=1600&auto=format&fit=crop" alt="Equipo de trabajo en obra" />
+          </div>
+          <div class="work-cta__content reveal delay-1">
+            <h2>¿Buscas crecer en el sector construcción?</h2>
+            <p>En Constructora Chacón impulsamos el talento panameño con proyectos desafiantes, formación continua y un ambiente seguro. Conoce cómo postularte y forma parte de nuestro equipo.</p>
+            <a href="trabaja.html" class="btn btn--accent">Postularse ahora</a>
+          </div>
         </div>
       </div>
     </section>
@@ -190,22 +211,46 @@
           <button class="carousel__btn prev" aria-label="Anterior"><i class="ri-arrow-left-s-line"></i></button>
           <div class="carousel__track" tabindex="0">
             <figure class="carousel__item">
-              <img src="components/img/2do piso CH.jpg" alt="Proyecto 2do piso" />
+              <img src="assets/2do%20piso%20CH.jpg" alt="Proyecto residencial de dos plantas" />
+              <figcaption>
+                <h3>Residencial Coronado</h3>
+                <p>Ampliación estructural y acabados premium.</p>
+              </figcaption>
             </figure>
             <figure class="carousel__item">
-              <img src="components/img/Baldosas CH.jpg" alt="Proyecto Baldosas" />
+              <img src="assets/Baldosas%20CH.jpg" alt="Proyecto Baldosas" />
+              <figcaption>
+                <h3>Centro Corporativo</h3>
+                <p>Modernización de pisos y áreas comunes.</p>
+              </figcaption>
             </figure>
             <figure class="carousel__item">
-              <img src="components/img/baño CH.jpg" alt="Proyecto Baño" />
+              <img src="assets/baño%20CH.jpg" alt="Proyecto Baño" />
+              <figcaption>
+                <h3>Vivienda Familiar</h3>
+                <p>Remodelación integral con enfoque sostenible.</p>
+              </figcaption>
             </figure>
             <figure class="carousel__item">
-              <img src="components/img/edificio CH.jpg" alt="Proyecto Edificio" />
+              <img src="assets/edificio%20CH.jpg" alt="Proyecto Edificio" />
+              <figcaption>
+                <h3>PH Venecia</h3>
+                <p>Estructura vertical reforzada y áreas comunes.</p>
+              </figcaption>
             </figure>
             <figure class="carousel__item">
-              <img src="components/img/edificio insideCH.jpg" alt="Interior Edificio" />
+              <img src="assets/edificio%20insideCH.jpg" alt="Interior Edificio" />
+              <figcaption>
+                <h3>Espacios Corporativos</h3>
+                <p>Diseño interior funcional para equipos ágiles.</p>
+              </figcaption>
             </figure>
             <figure class="carousel__item">
-              <img src="components/img/puente CH.jpg" alt="Proyecto Puente" />
+              <img src="assets/puente%20CH.jpg" alt="Proyecto Puente" />
+              <figcaption>
+                <h3>Infraestructura Pública</h3>
+                <p>Construcción de puente vehicular y peatonal.</p>
+              </figcaption>
             </figure>
           </div>
           <button class="carousel__btn next" aria-label="Siguiente"><i class="ri-arrow-right-s-line"></i></button>
@@ -220,12 +265,12 @@
         <p class="center section__subtitle reveal delay-1">Más de una década de experiencia participando en proyectos emblemáticos de Panamá.</p>
         <div class="grid grid--2 team">
           <article class="member reveal">
-            <img src="https://images.unsplash.com/photo-1607779097040-26a41d0313a7?q=80&w=1000&auto=format&fit=crop" alt="Edgar Chacón" />
+            <img src="assets/imagen%20edg.webp" alt="Edgar Chacón" />
             <h3>Edgar Chacón</h3>
             <p>Representante legal, capataz y soldador.</p>
           </article>
           <article class="member reveal delay-1">
-            <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1000&auto=format&fit=crop" alt="Miguel Chacón" />
+            <img src="assets/pelon.jpg" alt="Miguel Chacón" />
             <h3>Miguel Chacón</h3>
             <p>Capataz y albañil.</p>
           </article>
@@ -399,8 +444,7 @@
       <div class="footer__content">
         <div class="footer__section">
           <div class="footer__brand">
-            <img src="1000338917.png" alt="Constructora Chacón, S.A." class="footer__logo" />
-            <h3>Constructora Chacón, S.A.</h3>
+            <img src="assets/logoCH.png" alt="Constructora Chacón, S.A." class="footer__logo" />
           </div>
           <p class="footer__description">Más de una década construyendo el futuro de Panamá con compromiso, calidad y responsabilidad.</p>
           <div class="footer__social">
@@ -451,14 +495,14 @@
       </div>
       
       <div class="footer__bottom">
+        <div class="footer__copy">
+          <p>Gracias por confiar en nosotros. ¡Juntos construimos futuro!</p>
+          <p class="small">© 2025 Constructora Chacón, S.A. Todos los derechos reservados.</p>
+        </div>
         <div class="footer__certifications">
           <span><i class="ri-award-line"></i> Registrado ante JTIA</span>
           <span><i class="ri-shield-check-line"></i> Certificado de Calidad</span>
           <span><i class="ri-medal-line"></i> 10+ Años de Experiencia</span>
-        </div>
-        <div class="footer__copy">
-          <p>Gracias por confiar en nosotros. ¡Juntos construimos futuro!</p>
-          <p class="small">© 2025 Constructora Chacón, S.A. Todos los derechos reservados.</p>
         </div>
       </div>
     </div>

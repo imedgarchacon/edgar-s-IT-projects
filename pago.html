@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pagar factura — Constructora Chacón</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html#inicio" class="brand">
+        <img src="assets/logoCH.png" alt="Constructora Chacón" class="brand__logo" />
+      </a>
+      <nav class="nav" aria-label="Principal">
+        <button class="nav__toggle" aria-label="Abrir menú"><i class="ri-menu-line"></i></button>
+        <ul class="nav__list">
+          <li><a href="index.html#inicio">Inicio</a></li>
+          <li><a href="dashboard.html">Panel</a></li>
+          <li><a href="index.html#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+      <div class="header__actions">
+        <a class="btn btn--accent" href="dashboard.html">Volver al panel</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="payment">
+    <div class="container">
+      <div class="payment__heading reveal visible">
+        <span class="badge badge--gold"><i class="ri-shield-check-line"></i> Pago seguro</span>
+        <h1>Completa tu pago</h1>
+        <p class="payment__lead">Verifica el detalle del cobro y registra tus datos para procesar el pago con tarjeta de crédito o débito.</p>
+      </div>
+
+      <div class="payment__layout">
+        <section class="payment__summary reveal visible" id="paymentSummary">
+          <h2>Resumen del cobro</h2>
+          <ul>
+            <li><span>Concepto</span><strong id="summaryConcepto">—</strong></li>
+            <li><span>Monto</span><strong id="summaryMonto">—</strong></li>
+            <li><span>Fecha</span><strong id="summaryFecha">—</strong></li>
+            <li><span>ID transacción</span><strong id="summaryId">—</strong></li>
+          </ul>
+          <div class="payment__methods">
+            <h3>Métodos aceptados</h3>
+            <div class="payment__logos">
+              <i class="ri-visa-line" aria-hidden="true"></i>
+              <i class="ri-mastercard-line" aria-hidden="true"></i>
+              <i class="ri-bank-card-line" aria-hidden="true"></i>
+            </div>
+            <p>Procesamos tus pagos con cifrado TLS 1.2 para proteger tus datos.</p>
+          </div>
+        </section>
+
+        <form class="form payment__form reveal visible" id="paymentForm">
+          <h2>Datos de facturación</h2>
+          <div class="form__row">
+            <input type="text" id="payerName" placeholder="Nombre completo" required />
+            <input type="email" id="payerEmail" placeholder="Correo electrónico" required />
+          </div>
+          <div class="form__row">
+            <input type="tel" id="payerPhone" placeholder="Teléfono" required />
+            <input type="text" id="payerId" placeholder="Identificación / RUC" />
+          </div>
+
+          <h3>Información de la tarjeta</h3>
+          <div class="card-grid">
+            <div class="card-field">
+              <label for="cardNumber">Número de tarjeta</label>
+              <input type="text" id="cardNumber" inputmode="numeric" maxlength="19" placeholder="XXXX XXXX XXXX XXXX" required />
+              <small>Aceptamos Visa, Mastercard y Clave</small>
+            </div>
+            <div class="card-field">
+              <label for="cardExpiry">Fecha de expiración</label>
+              <input type="text" id="cardExpiry" inputmode="numeric" maxlength="5" placeholder="MM/AA" required />
+            </div>
+            <div class="card-field">
+              <label for="cardCvv">CVV</label>
+              <input type="password" id="cardCvv" inputmode="numeric" maxlength="4" placeholder="***" required />
+            </div>
+          </div>
+
+          <div class="form__row">
+            <input type="text" id="billingAddress" placeholder="Dirección de facturación" required />
+            <input type="text" id="billingCity" placeholder="Ciudad" required />
+          </div>
+
+          <label class="checkbox">
+            <input type="checkbox" id="terms" required />
+            <span>Confirmo que los datos son correctos y autorizo el cargo a mi tarjeta.</span>
+          </label>
+
+          <div class="payment__actions">
+            <button class="btn btn--accent" type="submit">Pagar ahora</button>
+            <a class="btn btn--ghost" href="dashboard.html">Cancelar</a>
+          </div>
+          <p class="small payment__disclaimer"><i class="ri-lock-line"></i> Tus datos se utilizan exclusivamente para procesar el pago. No serán compartidos con terceros.</p>
+
+          <div class="payment__message" id="paymentMessage" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script src="comp.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const concepto = params.get('concepto') || 'Pago de servicio';
+    const monto = parseFloat(params.get('monto') || '0');
+    const fecha = params.get('fecha') || new Date().toISOString().substring(0,10);
+    const referencia = params.get('ref') || `CH-${Date.now().toString().slice(-6)}`;
+
+    const formatter = new Intl.NumberFormat('es-PA', { style: 'currency', currency: 'USD' });
+
+    document.getElementById('summaryConcepto').textContent = concepto;
+    document.getElementById('summaryMonto').textContent = monto > 0 ? formatter.format(monto) : '—';
+    document.getElementById('summaryFecha').textContent = new Date(fecha).toLocaleDateString('es-PA', { year: 'numeric', month: 'long', day: 'numeric' });
+    document.getElementById('summaryId').textContent = referencia;
+
+    const paymentForm = document.getElementById('paymentForm');
+    const messageEl = document.getElementById('paymentMessage');
+
+    function showMessage(text, type = 'success') {
+      messageEl.textContent = text;
+      messageEl.className = `payment__message payment__message--${type}`;
+    }
+
+    function sanitizeCardNumber(value) {
+      return value.replace(/\D/g, '');
+    }
+
+    function validateCard(number) {
+      const sanitized = sanitizeCardNumber(number);
+      if (sanitized.length < 13 || sanitized.length > 19) return false;
+      // Luhn Algorithm
+      let sum = 0;
+      let shouldDouble = false;
+      for (let i = sanitized.length - 1; i >= 0; i--) {
+        let digit = parseInt(sanitized.charAt(i), 10);
+        if (shouldDouble) {
+          digit *= 2;
+          if (digit > 9) digit -= 9;
+        }
+        sum += digit;
+        shouldDouble = !shouldDouble;
+      }
+      return sum % 10 === 0;
+    }
+
+    function validateExpiry(value) {
+      if (!/^\d{2}\/\d{2}$/.test(value)) return false;
+      const [month, year] = value.split('/').map(Number);
+      if (month < 1 || month > 12) return false;
+      const current = new Date();
+      const expiry = new Date(2000 + year, month);
+      return expiry > current;
+    }
+
+    paymentForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const cardNumber = document.getElementById('cardNumber').value;
+      const cardExpiry = document.getElementById('cardExpiry').value;
+      const cardCvv = document.getElementById('cardCvv').value;
+
+      if (!validateCard(cardNumber)) {
+        showMessage('Verifica el número de la tarjeta e intenta nuevamente.', 'error');
+        return;
+      }
+
+      if (!validateExpiry(cardExpiry)) {
+        showMessage('La fecha de expiración no es válida.', 'error');
+        return;
+      }
+
+      if (!/^\d{3,4}$/.test(cardCvv)) {
+        showMessage('El CVV debe tener 3 o 4 dígitos.', 'error');
+        return;
+      }
+
+      const record = {
+        concepto,
+        monto,
+        fecha: new Date().toISOString(),
+        referencia,
+        nombre: document.getElementById('payerName').value,
+        correo: document.getElementById('payerEmail').value
+      };
+
+      try {
+        const history = JSON.parse(localStorage.getItem('payments_history') || '[]');
+        history.push(record);
+        localStorage.setItem('payments_history', JSON.stringify(history));
+      } catch (error) {
+        console.warn('No se pudo guardar el historial local.', error);
+      }
+
+      showMessage(`¡Pago registrado! Recibirás un correo a ${record.correo} con el comprobante.`, 'success');
+      paymentForm.reset();
+      setTimeout(() => {
+        window.location.href = 'dashboard.html#payments';
+      }, 2200);
+    });
+  </script>
+</body>
+</html>
+

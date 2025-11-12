@@ -111,8 +111,8 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 });
 
 // Add floating animation to cards
-const cards = document.querySelectorAll('.card, .service, .member');
-cards.forEach(card => {
+const teamCards = document.querySelectorAll('.member');
+teamCards.forEach(card => {
   card.addEventListener('mouseenter', () => {
     card.style.animation = 'float 2s ease-in-out infinite';
   });

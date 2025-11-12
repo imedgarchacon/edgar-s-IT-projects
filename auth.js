@@ -19,41 +19,61 @@ class AuthSystem {
 
   setupEventListeners() {
     // Modal buttons
-    document.getElementById('loginBtn').addEventListener('click', () => this.showModal('loginModal'));
-    document.getElementById('registerBtn').addEventListener('click', () => this.showModal('registerModal'));
+    const loginBtn = document.getElementById('loginBtn');
+    const registerBtn = document.getElementById('registerBtn');
+    const closeLoginModal = document.getElementById('closeLoginModal');
+    const closeRegisterModal = document.getElementById('closeRegisterModal');
+    const showRegister = document.getElementById('showRegister');
+    const showLogin = document.getElementById('showLogin');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const loginModal = document.getElementById('loginModal');
+    const registerModal = document.getElementById('registerModal');
+
+    if (loginBtn) loginBtn.addEventListener('click', () => this.showModal('loginModal'));
+    if (registerBtn) registerBtn.addEventListener('click', () => this.showModal('registerModal'));
     
     // Close buttons
-    document.getElementById('closeLoginModal').addEventListener('click', () => this.hideModal('loginModal'));
-    document.getElementById('closeRegisterModal').addEventListener('click', () => this.hideModal('registerModal'));
+    if (closeLoginModal) closeLoginModal.addEventListener('click', () => this.hideModal('loginModal'));
+    if (closeRegisterModal) closeRegisterModal.addEventListener('click', () => this.hideModal('registerModal'));
     
     // Switch between modals
-    document.getElementById('showRegister').addEventListener('click', (e) => {
-      e.preventDefault();
-      this.hideModal('loginModal');
-      this.showModal('registerModal');
-    });
+    if (showRegister) {
+      showRegister.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.hideModal('loginModal');
+        this.showModal('registerModal');
+      });
+    }
     
-    document.getElementById('showLogin').addEventListener('click', (e) => {
-      e.preventDefault();
-      this.hideModal('registerModal');
-      this.showModal('loginModal');
-    });
+    if (showLogin) {
+      showLogin.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.hideModal('registerModal');
+        this.showModal('loginModal');
+      });
+    }
     
     // Form submissions
-    document.getElementById('loginForm').addEventListener('submit', (e) => this.handleLogin(e));
-    document.getElementById('registerForm').addEventListener('submit', (e) => this.handleRegister(e));
+    if (loginForm) loginForm.addEventListener('submit', (e) => this.handleLogin(e));
+    if (registerForm) registerForm.addEventListener('submit', (e) => this.handleRegister(e));
     
     // Logout button
-    document.getElementById('logoutBtn').addEventListener('click', () => this.handleLogout());
+    if (logoutBtn) logoutBtn.addEventListener('click', () => this.handleLogout());
     
     // Close modals when clicking outside
-    document.getElementById('loginModal').addEventListener('click', (e) => {
-      if (e.target.id === 'loginModal') this.hideModal('loginModal');
-    });
+    if (loginModal) {
+      loginModal.addEventListener('click', (e) => {
+        if (e.target.id === 'loginModal') this.hideModal('loginModal');
+      });
+    }
     
-    document.getElementById('registerModal').addEventListener('click', (e) => {
-      if (e.target.id === 'registerModal') this.hideModal('registerModal');
-    });
+    if (registerModal) {
+      registerModal.addEventListener('click', (e) => {
+        if (e.target.id === 'registerModal') this.hideModal('registerModal');
+      });
+    }
   }
 
   setupAuthStateListener() {
@@ -215,9 +235,12 @@ class AuthSystem {
   updateUI() {
     const authButtons = document.getElementById('authButtons');
     const userMenu = document.getElementById('userMenu');
-    const userEmail = document.getElementById('userEmail');
+    const profileButton = document.getElementById('profileButton');
+    const profileAvatar = document.getElementById('profileAvatar');
+    const profileName = document.getElementById('profileName');
+    const logoutBtn = document.getElementById('logoutBtn');
     
-    if (this.currentUser) {
+    if (this.currentUser && authButtons && userMenu) {
       // User is logged in
       authButtons.style.display = 'none';
       userMenu.style.display = 'flex';
@@ -227,23 +250,27 @@ class AuthSystem {
           return raw ? (JSON.parse(raw).name || '') : '';
         } catch (_) { return ''; }
       })();
-      userEmail.textContent = displayName || this.currentUser.email;
-      // Redirect link to dashboard
-      const toDash = document.getElementById('toDashboard');
-      if(!toDash){
-        const link = document.createElement('a');
-        link.href = 'dashboard.html';
-        link.className = 'btn btn--ghost';
-        link.id = 'toDashboard';
-        link.textContent = 'Ir al Panel';
-        document.querySelector('.header__actions').insertBefore(link, document.querySelector('.header__actions').lastElementChild);
-      }
+      const fallback = this.currentUser.email || 'Usuario';
+      const label = displayName || fallback;
+      const initials = label
+        .split(' ')
+        .filter(Boolean)
+        .map(word => word[0])
+        .join('')
+        .slice(0,2)
+        .toUpperCase();
+
+      if (profileButton) profileButton.style.display = 'flex';
+      if (profileName) profileName.textContent = label;
+      if (profileAvatar) profileAvatar.textContent = initials || 'CC';
+      if (logoutBtn) logoutBtn.style.display = 'inline-flex';
+
     } else {
       // User is not logged in
-      authButtons.style.display = 'flex';
-      userMenu.style.display = 'none';
-      const toDash = document.getElementById('toDashboard');
-      if(toDash) toDash.remove();
+      if (authButtons) authButtons.style.display = 'flex';
+      if (userMenu) userMenu.style.display = 'none';
+      if (profileButton) profileButton.style.display = 'none';
+      if (logoutBtn) logoutBtn && (logoutBtn.style.display = 'none');
     }
   }
 }
