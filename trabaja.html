@@ -15,16 +15,24 @@
     .benefit{background:#fff;border:1px solid rgba(0,40,85,.12);border-radius:14px;padding:14px;display:flex;gap:10px;align-items:flex-start}
     .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
     .step{background:#fff;border:1px solid rgba(0,40,85,.12);border-radius:14px;padding:14px}
+    .job-hero .badge{color:#fff;background:rgba(255,255,255,.15)!important;border:1px solid rgba(255,255,255,.45);box-shadow:0 8px 20px rgba(0,0,0,.12)}
+    .job-hero .badge--gold{background:rgba(255,255,255,.22)!important;color:#fff!important;border-color:rgba(255,255,255,.55)!important}
     @media(max-width:900px){
       .benefits,.steps{grid-template-columns:1fr}
     }
   </style>
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+    import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
     const firebaseConfig = { apiKey: "AIzaSyAn-DHOCtzdd1Uheo_AJQ0vjZh3Rt3G_r8", authDomain: "constructora-ch.firebaseapp.com", projectId: "constructora-ch", storageBucket: "constructora-ch.firebasestorage.app", messagingSenderId: "359610922559", appId: "1:359610922559:web:ac83f5e9407bf758a92a8a" };
-    const app = initializeApp(firebaseConfig);
+    const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    window.auth = auth;
+    window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+    window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+    window.signOut = signOut;
+    window.onAuthStateChanged = onAuthStateChanged;
+    window.updateProfile = updateProfile;
     onAuthStateChanged(auth, (user)=>{
       const gate = document.getElementById('authGate');
       const shell = document.getElementById('appShell');
@@ -114,7 +122,7 @@
       <p>Postúlate como trabajador y forma parte de nuestros proyectos en Panamá.</p>
       <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:16px">
         <span class="badge badge--gold" style="padding:8px 14px;">Contratos por proyecto y permanentes</span>
-        <span class="badge" style="padding:8px 14px;background:rgba(0,40,85,.08);color:#002855;border-radius:999px;">Cobertura nacional</span>
+        <span class="badge" style="padding:8px 14px;">Cobertura nacional</span>
       </div>
     </div>
   </section>

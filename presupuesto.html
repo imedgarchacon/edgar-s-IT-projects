@@ -8,11 +8,17 @@
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+    import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
     const firebaseConfig = { apiKey: "AIzaSyAn-DHOCtzdd1Uheo_AJQ0vjZh3Rt3G_r8", authDomain: "constructora-ch.firebaseapp.com", projectId: "constructora-ch", storageBucket: "constructora-ch.firebasestorage.app", messagingSenderId: "359610922559", appId: "1:359610922559:web:ac83f5e9407bf758a92a8a" };
-    const app = initializeApp(firebaseConfig);
+    const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    window.auth = auth;
+    window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+    window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+    window.signOut = signOut;
+    window.onAuthStateChanged = onAuthStateChanged;
+    window.updateProfile = updateProfile;
     onAuthStateChanged(auth, (user)=>{
       const gate = document.getElementById('authGate');
       const shell = document.getElementById('appShell');
